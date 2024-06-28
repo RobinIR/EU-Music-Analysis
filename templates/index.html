@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Analysis App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <header class="d-flex justify-content-between fixed-top bg-light px-5 py-2">
+            <a href="#" class="navbar-brand">EU Music Analysis</a>
+            <nav>
+                <a href="#home" class="px-2">Home</a>
+                <a href="#correlation" class="px-2">Features Correlation</a>
+                <a href="#positivitychart" class="px-2">Positivity Chart</a>
+                <a href="#genres" class="px-2">Popular Genre</a>
+                <a href="#models" class="px-2">ML model</a>
+                <a href="#playlist" class="px-2">EU Playlist</a>
+
+            </nav>
+        </header>
+        <section class="py-5" id="Home" style="height: 300px">
+            <div class="justify-content-center">
+                <h2 class="text-center">Rythms of Europe</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga tempora quaerat odit, corrupti iste fugiat suscipit veritatis modi quo velit voluptatibus explicabo officiis consectetur porro quod sint alias animi illo possimus unde sed recusandae nam! Corrupti optio voluptatibus sint nemo labore velit vel aspernatur? Quaerat perferendis, harum, eius doloremque, repudiandae sed deserunt saepe esse tempora inventore ducimus magnam aliquam eligendi. Qui assumenda impedit dolorum, veritatis commodi similique adipisci voluptas consequuntur fuga illum suscipit, hic officiis maxime ullam ducimus ut deserunt atque magnam inventore, dicta ipsa aspernatur recusandae quidem. Labore eaque eveniet sint aperiam aliquid, tempore harum. Laborum eligendi minus atque.</p>
+            </div>
+        </section>
+        
+        <section class="py-5" id="correlation">
+            <br><br>
+            <h2>Features Correlation</h2>
+            <p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Debitis quas ex fugiat ea reiciendis placeat beatae aliquid eum illo architecto.</p>
+            <div id="correlationChart" style="height: 600px;"></div>
+        </section>
+     
+
+        <section class="py-5" id="positivitychart">
+            <h2>Positivity Scores of EU Countries</h2>
+            <canvas id="positivityChart" width="800" height="400"></canvas>
+        </section>
+
+        <section class="py-5" id="genres">
+            <h2 class="text-center">Most Pupular Genre in EU</h2>
+            <div id="mapContainer" style="width:100%;height:600px;"></div>
+        </section>
+
+        <section class="py-5" id="models">
+            <h2 class="text-center">ML model performance</h2><br><br>
+            <canvas id="performanceChart"></canvas>
+        </section>
+
+
+
+        <section class="py-5" id="playlist">
+            <div class="container mt-5">
+                <h2 class="text-center ">Top 10 Playlists by Country</h2>
+                <br>
+                <form id="playlistForm" class="mb-4">
+                    <div class="form-group">
+                        <label for="countrySelect">Select Country:</label>
+                        <select class="form-control" id="countrySelect">
+                            <!-- Options will be populated by JS -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get Playlist</button>
+                </form>
+                <div id="playlistContainer" class="row">
+                    <!-- Playlist will be populated by JS -->
+                </div>
+                <canvas id="playlistChart" width="800" height="400"></canvas>
+            </div>
+        </section>
+
+    </div>
+    <script src="/static/scripts/scripts.js"></script>
+</body>
+</html>
