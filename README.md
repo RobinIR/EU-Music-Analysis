@@ -35,6 +35,7 @@ pip install -r requirements.txt
 ```
 
 ## Run the Python script
+``` shell
 python app.py
-
+```
 Open your web browser and navigate to http://127.0.0.1:5500. Input the necessary data to interact with the application.
