@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import pycountry
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cluster import KMeans
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -90,7 +91,7 @@ def get_correlation():
 @app.route('/api/positivity')
 def get_positivity():
     europe_data = spotify_data[
-        (spotify_data['snapshot_date'].str.startswith('2023')) |
+        (spotify_data['snapshot_date'].str.startswith('2012')) |
         (spotify_data['snapshot_date'].str.startswith('2024'))
     ]
     europe_data = europe_data[europe_data['country'].isin([
@@ -227,6 +228,31 @@ europe = europe[~europe['genre'].isnull()]
 def get_genres():
     return jsonify(genre_data)
 
+# @app.route('/api/genres-map')
+# def get_genres_map():
+#     fig = go.Figure()
+
+#     fig.add_trace(go.Choropleth(
+#         locations=europe['SOVEREIGNT'],
+#         z=europe['genre'].astype('category').cat.codes,
+#         text=europe['genre'],
+#         locationmode='country names',
+#         colorscale='Viridis',
+#         colorbar_title="Genre",
+#         hoverinfo='location+text'
+#     ))
+
+#     fig.update_layout(
+#         title_text='Most Popular Music Genre in Europe',
+#         geo=dict(
+#             showframe=False,
+#             showcoastlines=False,
+#             projection_type='equirectangular'
+#         )
+#     )
+
+#     return json.dumps(fig, cls=PlotlyJSONEncoder)
+
 @app.route('/api/genres-map')
 def get_genres_map():
     fig = go.Figure()
@@ -244,6 +270,7 @@ def get_genres_map():
     fig.update_layout(
         title_text='Most Popular Music Genre in Europe',
         geo=dict(
+            scope='europe',  # Focus on Europe
             showframe=False,
             showcoastlines=False,
             projection_type='equirectangular'
@@ -273,6 +300,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 # Define models
 models = {
     'Random Forest': RandomForestClassifier(n_estimators=100, random_state=42),
+    'k-Nearest Neighbors': KNeighborsClassifier(),
+    'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42),
     # 'SVM': SVC(kernel='linear', random_state=42),
     # 'Logistic Regression': LogisticRegression(random_state=42)
 }
@@ -282,26 +311,29 @@ performance_data = []
 
 for name, model in models.items():
     print(f"\nTraining {name} model...")
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    
-    # Generate classification report
-    report = classification_report(y_test, y_pred, output_dict=True)
-    
-    # Collect overall performance metrics
-    accuracy = report['accuracy']
-    precision = report['weighted avg']['precision']
-    recall = report['weighted avg']['recall']
-    f1_score = report['weighted avg']['f1-score']
-    
-    # Add to performance data
-    performance_data.append({
-        'model': name,
-        'accuracy': accuracy,
-        'precision': precision,
-        'recall': recall,
-        'f1_score': f1_score
-    })
+    try:
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        
+        # Generate classification report
+        report = classification_report(y_test, y_pred, output_dict=True)
+        
+        # Collect overall performance metrics
+        accuracy = report['accuracy']
+        precision = report['weighted avg']['precision']
+        recall = report['weighted avg']['recall']
+        f1_score = report['weighted avg']['f1-score']
+        
+        # Add to performance data
+        performance_data.append({
+            'model': name,
+            'accuracy': accuracy,
+            'precision': precision,
+            'recall': recall,
+            'f1_score': f1_score
+        })
+    except Exception as e:
+        print(f"{name} encountered an error: {e}")
 
 # Save performance data to a JSON file
 with open('performance_data.json', 'w') as f:
@@ -356,8 +388,6 @@ def get_playlists():
 @app.route('/api/all-playlists', methods=['GET'])
 def get_all_playlists():
     return jsonify(playlists_data)
-
-
 
 
 

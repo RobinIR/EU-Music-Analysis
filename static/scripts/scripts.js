@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             const correlationChart = document.getElementById('correlationChart');
-            console.log(data)
             Plotly.newPlot(correlationChart, data, {
                 responsive: true,
                 scrollZoom: true,
@@ -78,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 datasets: [{
                     label: 'Positivity Score',
                     data: data.scores,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
                 }]
@@ -87,7 +86,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 responsive: true,
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        grid: {
+                            display: false // Hide the grid lines
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false // Hide the grid lines
+                        }
                     }
                 },
                 animation: {
@@ -217,19 +224,20 @@ document.addEventListener("DOMContentLoaded", function() {
                     // const chartCanvas = document.createElement('canvas');
                     // chartCanvas.id = 'playlistChart';
                     // document.body.appendChild(chartCanvas);
-
+                    document.getElementById('playlistChart').style.display = "block";
                     const ctx = document.getElementById('playlistChart').getContext('2d');
                     const scores = playlist.map(song => song.positivity_score);
                     const names = playlist.map(song => song.name);
 
                     new Chart(ctx, {
                         type: 'bar',
+                        indexAxis: 'y',
                         data: {
                             labels: names,
                             datasets: [{
                                 label: 'Positivity Score',
                                 data: scores,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                backgroundColor: 'rgba(122, 207, 246, 0.9)',
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 borderWidth: 1
                             }]
@@ -237,7 +245,15 @@ document.addEventListener("DOMContentLoaded", function() {
                         options: {
                             scales: {
                                 y: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    grid: {
+                                        display: false // Hide the grid lines
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false // Hide the grid lines
+                                    }
                                 }
                             },
                             animation: {
